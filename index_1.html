@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F4F2EF">
+<title>Pyae Phyo Naing (Mya Thar) - Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Serif+Myanmar:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#F4F2EF; --ink:#141414; --muted:#6d6a66; --line:#dcd8d2; --accent:#C8102E; --card:#fbfaf8;
+    --serif: "Noto Serif Myanmar", Georgia, "Times New Roman", serif;
+    --sans: "Noto Sans Myanmar", "Padauk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  [data-theme="night"] { --paper:#121212; --ink:#F4F2EF; --muted:#a6a29c; --line:#2c2c2c; --card:#1b1b1b; }
+  [data-theme="gold"] { --paper:#F6F1E7; --ink:#2b2118; --muted:#7a6a55; --line:#e2d6bf; --accent:#A8741A; --card:#FFFBF2; }
+  [data-theme="teal"] { --paper:#0F1F21; --ink:#E6F3F1; --muted:#8fb3ae; --line:#1f3d40; --accent:#2EC4B6; --card:#152a2d; }
+  select.btn { padding:8px 12px; font-family:inherit; background:var(--card); color:var(--ink); cursor:pointer; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.7; transition:background .4s, color .4s; overflow-x:hidden; }
+  a { color:inherit; }
+
+  /* top bar */
+  .topbar { position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; padding:14px 6vw; background:var(--paper); border-bottom:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.02em; text-decoration:none; }
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--accent); display:inline-block; }
+  .links { display:flex; gap:22px; align-items:center; font-size:.92rem; }
+  .links a:not(.btn) { text-decoration:none; color:var(--muted); position:relative; }
+  .links a:not(.btn):hover { color:var(--ink); }
+  .links a:not(.btn)::after { content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--accent); transition:width .25s ease; }
+  .links a:not(.btn):hover::after { width:100%; }
+  .btn { display:inline-block; padding:9px 16px; border-radius:6px; border:1px solid var(--ink); text-decoration:none; font-size:.9rem; background:none; color:var(--ink); cursor:pointer; font-family:inherit; transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease; }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn:hover { transform:translateY(-2px); }
+  .btn.primary:hover { box-shadow:0 10px 22px rgba(200,16,46,.28); }
+  .btn:not(.primary):hover { background:var(--ink); color:var(--paper); }
+
+  /* floating background shapes */
+  .shape { position:fixed; pointer-events:none; z-index:0; opacity:.2; color:var(--muted); animation:drift linear infinite; }
+  .shape.ring { border:2px solid currentColor; border-radius:50%; }
+  .shape.cube { border:2px solid currentColor; transform:rotate(30deg); }
+  @keyframes drift { 0%{transform:translateY(0) rotate(0);} 100%{transform:translateY(-120vh) rotate(260deg);} }
+  .topbar, .hero, .stats, section, footer { position:relative; z-index:1; }
+
+  /* hero */
+  .hero { padding:90px 6vw 70px; display:grid; grid-template-columns:1fr 270px; gap:60px; align-items:center; max-width:1100px; margin:0 auto; }
+  .eyebrow { font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  h1 { font-family:var(--serif); font-weight:700; font-size:clamp(2.6rem,6vw,4.4rem); line-height:1.05; margin:0 0 18px; }
+  h1 em, h2 em { font-weight:400; color:var(--muted); }
+  .aka { font-family:var(--serif); font-size:1.2rem; color:var(--muted); margin:-6px 0 16px; }
+  .aka strong { color:var(--accent); font-weight:700; }
+  .sub { font-size:1.12rem; color:var(--muted); max-width:560px; }
+  .ctas { margin-top:26px; display:flex; gap:12px; flex-wrap:wrap; }
+  .hero-photo { margin:0; }
+  .hero-photo img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:50% 25%; border-radius:14px; border:1px solid var(--line); filter:grayscale(.1); }
+  .hero-photo figcaption { font-family:var(--serif); font-style:italic; color:var(--muted); font-size:.85rem; margin-top:8px; }
+  html.js .hero > div > * { opacity:0; transform:translateY(18px); animation:rise .9s ease forwards; }
+  html.js .hero > div > .eyebrow { animation-delay:0s; }
+  html.js .hero > div > h1 { animation-delay:.1s; }
+  html.js .hero > div > .sub { animation-delay:.2s; }
+  html.js .hero > div > .ctas { animation-delay:.3s; }
+  html.js .hero-photo { opacity:0; transform:translateY(18px); animation:rise .9s .25s ease forwards; }
+  @keyframes rise { to { opacity:1; transform:none; } }
+
+  .stats { max-width:1100px; margin:0 auto; padding:0 6vw; display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stat { padding:26px 0; }
+  .stat + .stat { border-left:1px solid var(--line); padding-left:26px; }
+  .stat b { display:block; font-family:var(--serif); font-size:1.6rem; }
+  .stat span { color:var(--muted); font-size:.9rem; }
+
+  /* sections */
+  section { max-width:1100px; margin:0 auto; padding:90px 6vw 20px; }
+  .label { display:flex; align-items:center; gap:14px; margin-bottom:30px; }
+  .num { font-family:var(--serif); color:var(--accent); font-size:1rem; }
+  .eyebrow-l { font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h2 { font-family:var(--serif); font-weight:700; font-size:clamp(2rem,4vw,2.9rem); line-height:1.1; margin:0 0 26px; }
+  .lead { font-size:1.12rem; max-width:760px; }
+  .quote { margin:34px 0 0; max-width:760px; border-left:3px solid var(--accent); padding:6px 0 6px 20px; font-family:var(--serif); font-style:italic; font-size:1.1rem; color:var(--ink); }
+  .quote cite { display:block; margin-top:10px; font-family:var(--sans); font-style:normal; font-size:.9rem; color:var(--muted); }
+
+  /* words stay whole when they wrap; artwork gets a painted texture */
+  .w { display:inline-block; white-space:nowrap; }
+  .art { display:block; width:110px; height:auto; aspect-ratio:16/9; flex:none; border-radius:6px; background:radial-gradient(circle at 25% 15%, rgba(200,16,46,.22), transparent 55%), radial-gradient(circle at 85% 90%, rgba(120,140,200,.18), transparent 60%), var(--card); border:1px solid var(--line); opacity:.9; filter:url(#paint); }
+  .card .art { float:right; width:92px; margin:0 0 8px 14px; }
+  .card::after { content:""; display:block; clear:both; }
+  .bob { animation:bob 2.4s ease-in-out infinite; }
+  .chalk { stroke-dasharray:100; stroke-dashoffset:100; animation:draw 4s ease-in-out infinite alternate; }
+  .bar { transform-box:fill-box; transform-origin:50% 100%; animation:grow 3s ease-in-out infinite alternate; }
+  .flow { stroke-dasharray:8 10; animation:flow 1.4s linear infinite; }
+  .drive { animation:drive 3s ease-in-out infinite alternate; }
+  .spin { transform-box:fill-box; transform-origin:center; animation:spin 6s linear infinite; }
+  .flap { transform-box:fill-box; transform-origin:0% 0%; animation:flap 2.6s ease-in-out infinite; }
+  .blink { animation:blink 1.6s steps(2) infinite; }
+  .pulse { transform-box:fill-box; transform-origin:center; animation:pulse 2s ease-out infinite; }
+  .swing { transform-box:fill-box; transform-origin:top center; animation:swing 2.4s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  @keyframes draw { to { stroke-dashoffset:0; } }
+  @keyframes grow { from { transform:scaleY(.25); } to { transform:scaleY(1); } }
+  @keyframes flow { to { stroke-dashoffset:-36; } }
+  @keyframes drive { from { transform:translateX(-6px); } to { transform:translateX(8px); } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes flap { 0%,100% { transform:rotate(0deg); } 50% { transform:rotate(-16deg); } }
+  @keyframes blink { 50% { opacity:.2; } }
+  @keyframes pulse { 0% { transform:scale(.6); opacity:.9; } 100% { transform:scale(1.8); opacity:0; } }
+  @keyframes swing { 0%,100% { transform:rotate(-8deg); } 50% { transform:rotate(8deg); } }
+  @media (prefers-reduced-motion:reduce) {
+    .bob, .chalk, .bar, .flow, .drive, .spin, .flap, .blink, .pulse, .swing, .shape { animation:none; }
+    .chalk { stroke-dashoffset:0; }
+    html.js .hero > div > *, html.js .hero-photo { opacity:1; transform:none; animation:none; }
+  }
+
+  /* experience and showcase tracks */
+  .showcase { margin:0 -6vw; }
+  .track { display:flex; gap:20px; overflow-x:auto; padding:10px 6vw 26px; cursor:grab; scrollbar-width:none; -ms-overflow-style:none; }
+  .track::-webkit-scrollbar { display:none; }
+  .track.dragging { cursor:grabbing; user-select:none; }
+  .track .job { flex:none; width:310px; display:flex; flex-direction:column; gap:12px; padding:20px; border:1px solid var(--line); border-radius:8px; background:var(--card); transition:transform .3s ease, box-shadow .3s ease; }
+  .track .job:hover { transform:translateY(-4px); box-shadow:0 14px 26px rgba(0,0,0,.12); }
+  .track .job .art { order:-1; width:100%; margin:0; }
+  .track .job h3 { font-family:var(--serif); font-size:1.15rem; margin:0 0 4px; }
+  .track .job ul { margin:6px 0 0; padding-left:18px; }
+  .track .job li { margin:4px 0; }
+  .track .card { flex:none; width:300px; display:flex; flex-direction:column; gap:10px; cursor:grab; transition:transform .3s ease, box-shadow .3s ease; }
+  .track .card:hover { transform:translateY(-4px); box-shadow:0 14px 26px rgba(0,0,0,.12); }
+  .track .card .art { float:none; order:-1; width:100%; margin:0; }
+  .track .card p { margin:0; }
+  .track .card .pending { margin-top:auto; }
+  .showcase-controls { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:4px; }
+  .showcase-controls .hint { font-size:.85rem; color:var(--muted); }
+  .showcase-controls .btn { min-width:44px; }
+
+  /* experience */
+  .job-when { font-size:.88rem; color:var(--muted); }
+  .job h3 { font-family:var(--serif); font-size:1.3rem; margin:0 0 4px; }
+  .org { color:var(--muted); font-size:.95rem; margin-bottom:8px; }
+  .job ul { margin:8px 0 0; padding-left:18px; }
+  .job li { margin:4px 0; }
+
+  /* cards */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:22px; transition:transform .3s ease, background .3s ease; }
+  .card:hover { transform:translateY(-3px); }
+  .card h3 { font-family:var(--serif); margin:0 0 4px; font-size:1.2rem; }
+  .card .org { margin-bottom:6px; }
+  .card p { margin:6px 0 0; color:var(--muted); font-size:.95rem; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tag { border:1px solid var(--line); padding:6px 13px; border-radius:999px; font-size:.9rem; background:var(--card); transition:background .2s ease, color .2s ease, border-color .2s ease; }
+  .tag:hover { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .tag.deliv { font-size:.82rem; }
+  .pending { border:1px dashed var(--accent); padding:12px 16px; border-radius:6px; font-size:.92rem; color:var(--muted); margin-top:14px; }
+  .lead-line { font-size:1.05rem; color:var(--muted); max-width:760px; margin:-8px 0 26px; }
+
+  /* draggable volunteer cards */
+  #volunteer .card.drag { cursor:grab; user-select:none; touch-action:none; }
+  #volunteer .card.drag.dragging { cursor:grabbing; box-shadow:0 14px 30px rgba(0,0,0,.18); z-index:5; position:relative; }
+  #volunteer .hint { font-size:.85rem; color:var(--muted); margin:-10px 0 18px; }
+
+  /* faq */
+  details { border-top:1px solid var(--line); padding:18px 0; }
+  details:last-child { border-bottom:1px solid var(--line); }
+  summary { cursor:pointer; font-family:var(--serif); font-size:1.15rem; list-style:none; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; float:right; color:var(--accent); }
+  details[open] summary::after { content:"-"; }
+  details p { color:var(--muted); margin:10px 0 0; }
+
+  /* contact */
+  .contact { background:var(--ink); color:var(--paper); border-radius:8px; padding:56px 40px; margin:90px auto 0; max-width:1100px; }
+  .contact h2 { color:var(--paper); }
+  .contact a { color:var(--paper); }
+  .contact .big { font-family:var(--serif); font-size:1.5rem; }
+  footer { text-align:center; color:var(--muted); font-size:.85rem; padding:40px 6vw; }
+
+  /* cursor light, ripples and bubbles */
+  #glow { position:fixed; left:0; top:0; width:360px; height:360px; margin:-180px 0 0 -180px; pointer-events:none; z-index:2; border-radius:50%; background:radial-gradient(circle, rgba(200,16,46,.16), rgba(200,16,46,.04) 40%, transparent 70%); transition:transform .18s ease-out; }
+  .ch { display:inline-block; transition:transform .35s cubic-bezier(.2,.7,.2,1); will-change:transform; }
+  .fx { position:fixed; pointer-events:none; z-index:50; border-radius:50%; }
+  .fx.bub { border:1px solid var(--accent); background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.75), rgba(200,16,46,.14) 60%, transparent 72%); animation:bubUp ease-out forwards; }
+  .fx.ring { width:14px; height:14px; margin:-7px 0 0 -7px; border:1.5px solid var(--accent); animation:ringOut .9s ease-out forwards; }
+  @keyframes bubUp { 0% { transform:translate(0,0) scale(.5); opacity:.9; } 70% { opacity:.6; } 100% { transform:translate(var(--dx),-70px) scale(1.25); opacity:0; } }
+  @keyframes ringOut { 0% { transform:scale(.4); opacity:.8; } 100% { transform:scale(4); opacity:0; } }
+
+  @media (max-width:900px) {
+    .links a:not(.btn) { display:none; }
+    .hero { grid-template-columns:1fr; padding-top:50px; }
+    .hero-photo { max-width:240px; }
+    .stats { grid-template-columns:1fr; }
+    .stat + .stat { border-left:none; padding-left:0; border-top:1px solid var(--line); }
+    .grid2 { grid-template-columns:1fr; }
+    .contact { padding:40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- illustration library (original drawings, animated with CSS) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="paint" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <symbol id="s-class" viewBox="0 0 320 180">
+      <rect x="24" y="18" width="210" height="104" rx="6" style="fill:#2f3d35;stroke:#8a6b45" stroke-width="7"/>
+      <path class="chalk" pathLength="100" d="M56 52 H200 M56 76 H170 M56 100 H120" style="stroke:#f4f2ef" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <g class="bob">
+        <circle cx="270" cy="50" r="13" style="fill:var(--accent)"/>
+        <rect x="256" y="66" width="28" height="56" rx="10" style="fill:var(--ink);opacity:.85"/>
+        <path d="M258 82 L234 66" style="stroke:var(--ink)" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <rect x="30" y="142" width="120" height="8" rx="3" style="fill:var(--muted)"/>
+      <rect x="180" y="142" width="110" height="8" rx="3" style="fill:var(--muted)"/>
+      <circle class="bob" cx="60" cy="126" r="11" style="fill:var(--muted)"/>
+      <circle class="bob" style="animation-delay:.5s" cx="98" cy="126" r="11" style="fill:var(--muted)"/>
+      <circle class="bob" style="animation-delay:1s" cx="212" cy="126" r="11" style="fill:var(--muted)"/>
+      <circle class="bob" style="animation-delay:1.5s" cx="250" cy="126" r="11" style="fill:var(--muted)"/>
+    </symbol>
+    <symbol id="s-team" viewBox="0 0 320 180">
+      <path class="flow" d="M160 40 L108 22 M160 40 L212 22 M160 40 L60 60 M160 40 L260 60" style="stroke:var(--accent)" stroke-width="2.5" fill="none"/>
+      <circle class="pulse" cx="160" cy="40" r="10" style="fill:var(--accent);opacity:.5"/>
+      <g class="bob">
+        <circle cx="160" cy="62" r="16" style="fill:var(--accent)"/>
+        <rect x="146" y="82" width="28" height="52" rx="10" style="fill:var(--ink)"/>
+        <path d="M150 98 L110 84 M170 98 L212 84" style="stroke:var(--ink)" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <g class="bob" style="animation-delay:.3s"><circle cx="66" cy="110" r="11" style="fill:var(--muted)"/><rect x="54" y="126" width="24" height="40" rx="8" style="fill:var(--muted)"/></g>
+      <g class="bob" style="animation-delay:.8s"><circle cx="100" cy="120" r="11" style="fill:var(--muted)"/><rect x="88" y="136" width="24" height="30" rx="8" style="fill:var(--muted)"/></g>
+      <g class="bob" style="animation-delay:1.2s"><circle cx="222" cy="120" r="11" style="fill:var(--muted)"/><rect x="210" y="136" width="24" height="30" rx="8" style="fill:var(--muted)"/></g>
+      <g class="bob" style="animation-delay:.5s"><circle cx="256" cy="110" r="11" style="fill:var(--muted)"/><rect x="244" y="126" width="24" height="40" rx="8" style="fill:var(--muted)"/></g>
+    </symbol>
+    <symbol id="s-ledger" viewBox="0 0 320 180">
+      <path d="M36 152 H290" style="stroke:var(--muted)" stroke-width="3"/>
+      <rect class="bar" x="60" y="92" width="26" height="60" rx="3" style="fill:var(--muted)"/>
+      <rect class="bar" style="animation-delay:.3s" x="110" y="70" width="26" height="82" rx="3" style="fill:var(--ink)"/>
+      <rect class="bar" style="animation-delay:.6s" x="160" y="46" width="26" height="106" rx="3" style="fill:var(--accent)"/>
+      <rect class="bar" style="animation-delay:.9s" x="210" y="80" width="26" height="72" rx="3" style="fill:var(--ink)"/>
+      <rect class="bar" style="animation-delay:1.2s" x="260" y="36" width="26" height="116" rx="3" style="fill:var(--muted)"/>
+      <circle class="spin" cx="270" cy="22" r="10" style="fill:none;stroke:var(--accent)" stroke-width="3" stroke-dasharray="14 6"/>
+    </symbol>
+    <symbol id="s-road" viewBox="0 0 320 180">
+      <rect x="0" y="118" width="320" height="62" style="fill:var(--muted);opacity:.25"/>
+      <path d="M0 150 H320" style="stroke:var(--ink)" stroke-width="4"/>
+      <path class="flow" d="M0 150 H320" style="stroke:var(--card)" stroke-width="3"/>
+      <g class="drive">
+        <rect x="120" y="90" width="72" height="42" rx="4" style="fill:var(--accent)"/>
+        <rect x="192" y="104" width="26" height="28" rx="3" style="fill:var(--accent)"/>
+        <circle cx="138" cy="140" r="9" style="fill:var(--ink)"/>
+        <circle cx="202" cy="140" r="9" style="fill:var(--ink)"/>
+      </g>
+      <path d="M46 150 L58 122 L70 150 Z" style="fill:var(--ink)"/>
+      <path d="M280 150 L280 60 M280 60 L300 52" style="stroke:var(--muted)" stroke-width="4" fill="none"/>
+    </symbol>
+    <symbol id="s-phone" viewBox="0 0 320 180">
+      <rect x="118" y="16" width="84" height="148" rx="14" style="fill:var(--ink)"/>
+      <rect x="128" y="32" width="64" height="116" rx="6" style="fill:var(--card)"/>
+      <circle class="pulse" cx="160" cy="90" r="14" style="fill:var(--accent)"/>
+      <circle cx="160" cy="90" r="8" style="fill:var(--accent)"/>
+      <path class="blink" d="M70 60 L92 70 M250 60 L228 70 M70 120 L92 110 M250 120 L228 110" style="stroke:var(--accent)" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="s-stage" viewBox="0 0 320 180">
+      <rect x="92" y="70" width="150" height="92" rx="6" style="fill:var(--ink)"/>
+      <g class="flap"><rect x="92" y="50" width="150" height="22" rx="3" style="fill:var(--accent)"/></g>
+      <path d="M110 92 H224 M110 110 H190" style="stroke:var(--card)" stroke-width="4" stroke-linecap="round" class="blink"/>
+      <circle class="spin" cx="60" cy="120" r="26" style="fill:none;stroke:var(--muted)" stroke-width="5" stroke-dasharray="20 10"/>
+      <circle class="spin" cx="262" cy="120" r="26" style="fill:none;stroke:var(--muted)" stroke-width="5" stroke-dasharray="20 10"/>
+    </symbol>
+    <symbol id="s-cap" viewBox="0 0 320 180">
+      <path d="M100 100 V132 Q160 152 220 132 V100 Z" style="fill:var(--ink);opacity:.85"/>
+      <polygon points="160,52 262,88 160,124 58,88" style="fill:var(--ink)"/>
+      <g class="swing">
+        <path d="M250 96 V130" style="stroke:var(--accent)" stroke-width="3"/>
+        <circle cx="250" cy="134" r="6" style="fill:var(--accent)"/>
+      </g>
+    </symbol>
+    <symbol id="s-laptop" viewBox="0 0 320 180">
+      <rect x="98" y="36" width="124" height="86" rx="6" style="fill:var(--ink)"/>
+      <rect x="108" y="46" width="104" height="66" rx="3" style="fill:var(--card)"/>
+      <rect x="118" y="58" width="50" height="6" rx="3" style="fill:var(--accent)"/>
+      <rect class="blink" x="118" y="72" width="70" height="6" rx="3" style="fill:var(--muted)"/>
+      <rect x="118" y="86" width="40" height="6" rx="3" style="fill:var(--muted)"/>
+      <rect x="118" y="100" width="82" height="6" rx="3" style="fill:var(--muted)"/>
+      <rect x="78" y="122" width="164" height="10" rx="4" style="fill:var(--ink)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <a class="brand" href="#top"><span class="dot"></span> Pyae Phyo Naing</a>
+  <div class="links">
+    <a href="#experience" data-my="အလုပ်အတွေ့အကြုံ">Experience</a>
+    <a href="#teaching" data-my="သင်ကြားမှု">Teaching</a>
+    <a href="#building" data-my="စနစ်များ">Building</a>
+    <a href="#services" data-my="ဝန်ဆောင်မှုများ">Services</a>
+    <a href="#volunteer" data-my="အသိုင်းအဝိုင်း">Volunteer</a>
+    <a href="#education" data-my="ပညာရေး">Education</a>
+    <a href="#faq" data-my="မေးခွန်းများ">FAQ</a>
+    <select class="btn" id="themeSel" aria-label="Theme">
+      <option value="paper">Paper</option>
+      <option value="night">Night</option>
+      <option value="gold">Warm Gold</option>
+      <option value="teal">Teal</option>
+    </select>
+    <button class="btn" id="langBtn" type="button">မြန်မာ</button>
+    <a class="btn primary" href="#contact" data-my="ဆက်သွယ်ရန်">Contact</a>
+  </div>
+</div>
+
+<header id="top" class="hero">
+  <div>
+    <div class="eyebrow" data-my="စီမံခန့်ခွဲမှု · ငွေကြေး · ပရောဂျက် စီမံခန့်ခွဲမှု">Admin · Finance · Project Management</div>
+    <h1>Pyae Phyo <em>Naing</em></h1>
+    <p class="aka" data-my="လူအများစုက <strong>Mya Thar</strong> ဟု ခေါ်ကြပါတယ်">Known to most people as <strong>Mya Thar</strong></p>
+    <p class="sub" data-my="မြန်မာနဲ့ ထိုင်းနိုင်ငံရှိ အစိုးရမဟုတ်သော အဖွဲ့အစည်း၊ ပညာရေးနဲ့ အနုပညာ အဖွဲ့အစည်းတွေအတွက် စီမံခန့်ခွဲမှုနဲ့ ငွေကြေးဆိုင်ရာ ကျွမ်းကျင်သူ ဖြစ်ပါတယ်။ Donor အစီရင်ခံစာ၊ HR စနစ်၊ grant၊ စာရင်းကိုင်နဲ့ စီးပွားရေး သင်ကြားမှု လုပ်ဆောင်ပါတယ်။">Administration and finance professional for nonprofit, education and arts organizations across Myanmar and Thailand. Donor reporting, HR systems, grants, and teaching accounting and business.</p>
+    <div class="ctas">
+      <a class="btn primary" href="#contact" data-my="ဆက်သွယ်ရန်">Get in touch</a>
+      <a class="btn" href="#experience" data-my="အလုပ်အတွေ့အကြုံ ကြည့်ရန်">See experience</a>
+      <a class="btn" href="mailto:pyaephyonaing.six@gmail.com?subject=CV%20request" data-my="CV တောင်းရန် (PDF)">Request CV (PDF)</a>
+    </div>
+  </div>
+  <figure class="hero-photo">
+    <img src="img/photo.jpg" alt="Pyae Phyo Naing">
+    <figcaption data-my="ချင်းမိုင်၊ ထိုင်း">Chiang Mai, Thailand</figcaption>
+  </figure>
+</header>
+
+<div class="stats">
+  <div class="stat"><b data-my="၂၀၂၀ ကတည်းက">Since 2020</b><span data-my="အစိုးရမဟုတ်သော အဖွဲ့အစည်းတွေရဲ့ စီမံခန့်ခွဲမှုနဲ့ ငွေကြေး ဦးဆောင်မှု">Nonprofit admin &amp; finance leadership</span></div>
+  <div class="stat"><b data-my="၂၀၁၂ ကတည်းက">Since 2012</b><span data-my="မြန်မာနဲ့ ထိုင်းမှာ ပရော်ဖက်ရှင်နယ် အလုပ်">Professional work in Myanmar and Thailand</span></div>
+  <div class="stat"><b data-my="သင်ကြားမှု">Teaching</b><span data-my="LCCI၊ accounting၊ business နဲ့ ERP">LCCI, accounting, business &amp; ERP</span></div>
+</div>
+
+<section id="about">
+  <div class="label"><span class="num">01</span><span class="eyebrow-l" data-my="အကြောင်း">About</span></div>
+  <h2 data-my="အစီအစဉ်များကို <em>တာဝန်ခံမှုရှိရှိ</em> ဆောင်ရွက်ခြင်း">Keeping programs <em>accountable</em></h2>
+  <p class="lead" data-my="အလှူရှင်တွေ၊ မိတ်ဖက်တွေနဲ့ ဘုတ်အဖွဲ့တွေနဲ့အတူ လူမှုအသိုင်းအဝိုင်းရဲ့ ပညာရေး၊ အနုပညာနဲ့ လူသားချင်းစာနာမှု အစီအစဉ်တွေကို ရည်ရွယ်ချက်အတိုင်း၊ ပွင့်လင်းမြင်သာစွာ ဆောင်ရွက်နိုင်အောင် ကူညီခဲ့ပါတယ်။ ဘတ်ဂျက်၊ grant အစီရင်ခံစာ၊ HR၊ policy နဲ့ နေ့စဉ် လုပ်ငန်းတွေ ပါဝင်ပါတယ်။ ယခုအခါ AI ကိရိယာတွေနဲ့ admission portal နဲ့ ERP လို ဒစ်ဂျစ်တယ် ကိရိယာတွေကိုလည်း တည်ဆောက်နေပါတယ်။">I have worked with donors, partners and boards to keep community education, arts and humanitarian programs on track and transparent. My work covers budgets, grant reporting, HR, policy and day-to-day operations. I am also building digital tools (an admission portal and ERP) with AI tools.</p>
+  <blockquote class="quote">
+    <span data-my="ခေါင်းဆောင်မှု၊ ပရော်ဖက်ရှင်နယ်စံနှုန်းနဲ့ အဖွဲ့အစည်း စီမံခန့်ခွဲမှုနဲ့ အဖွဲ့အစည်း ဖွံ့ဖြိုးရေးအပေါ် ထူးချွန်စွာ ကတိကဝတ် ရှိသူ ဖြစ်ပါတယ်။">“…exceptional leadership, professionalism, and a strong commitment to organisational management and institutional development.”</span>
+    <cite data-my="— ကိုသူရ၊ သမ္မတ၊ Spring University Myanmar">— Ko Thura, President, Spring University Myanmar</cite>
+  </blockquote>
+</section>
+
+<section id="experience">
+  <div class="label"><span class="num">02</span><span class="eyebrow-l" data-my="အလုပ်အတွေ့အကြုံ">Experience</span></div>
+  <h2 data-my="အလုပ်လုပ်ခဲ့သော <em>နေရာများ</em>">Where I have <em>worked</em></h2>
+  <div class="showcase">
+  <div class="track" id="track">
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A director guiding a team"><use href="#s-team"/></svg>
+    <div class="job-when" data-my="ဩဂုတ် ၂၀၂၂ – ယခုထိ">Aug 2022 – Present</div>
+    <h3 data-my="စီမံခန့်ခွဲရေး ဒါရိုက်တာ (အချိန်ပိုင်း၊ အဝေးမှ)">Administrative Director (Part-time, Remote)</h3>
+    <div class="org" data-my="Spring University Myanmar၊ ထိုင်းနိုင်ငံ">Spring University Myanmar, Thailand</div>
+    <ul>
+      <li data-my="ပညာရေးနဲ့ သင်တန်း အစီအစဉ်တွေ တစ်လျှောက်လုံး စီမံခန့်ခွဲမှု၊ HR နဲ့ ကျောင်းသားရေးရာကို ဦးဆောင်ပါတယ်။">Lead administration, HR and student affairs across academic and training programs.</li>
+      <li data-my="ဒေသခံနဲ့ နိုင်ငံတကာ မိတ်ဖက်တွေနဲ့ အကောင်အထည်ဖော်မှုနဲ့ စည်းမျဉ်း လိုက်နာမှုဆိုင်ရာ ညှိနှိုင်းပါတယ်။">Coordinate with local and international partners on delivery and compliance.</li>
+      <li data-my="အစီရင်ခံစာ၊ ဘတ်ဂျက်နဲ့ အတွင်းပိုင်း စနစ်တွေကို စီမံပြီး policy နဲ့ SOP တွေ ရေးဆွဲပါတယ်။">Manage reporting, budgets and internal systems; develop policies and SOPs.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage with a clapperboard"><use href="#s-stage"/></svg>
+    <div class="job-when" data-my="ဩဂုတ် ၂၀၂၃ – ဒီဇင်ဘာ ၂၀၂၅">Aug 2023 – Dec 2025</div>
+    <h3 data-my="စီမံခန့်ခွဲရေးနဲ့ ငွေကြေး မန်နေဂျာ (အချိန်ပိုင်း စေတနာ့ဝန်ထမ်း)">Administrative &amp; Finance Manager (Part-time Volunteer)</h3>
+    <div class="org">Artists' Shelter, Thailand</div>
+    <ul>
+      <li data-my="အလှူရှင် အများအပြား ပါဝင်တဲ့ အနုပညာနဲ့ ယဉ်ကျေးမှု စီမံကိန်းတွေအတွက် လစာ၊ ဘတ်ဂျက်နဲ့ donor အစီရင်ခံစာကို စီမံပါတယ်။">Managed payroll, budgets and donor reporting for multi-donor arts and cultural initiatives.</li>
+      <li data-my="တီထွင်ဖန်တီးမှုနဲ့ လူသားချင်းစာနာမှု လုပ်ငန်းတွေအတွက် ပရောဂျက် စီစဉ်ခြင်း၊ logistics နဲ့ အခမ်းအနားတွေကို ကူညီပါတယ်။">Supported project planning, logistics and events for creative and humanitarian work.</li>
+      <li data-my="စွမ်းဆောင်ရည် တိုးတက်စေဖို့နဲ့ ဝန်ထမ်းနဲ့ စေတနာ့ဝန်ထမ်းတွေရဲ့ စွမ်းရည်ကို ခိုင်မာစေဖို့ policy တွေကို မိတ်ဆက်ခဲ့ပါတယ်။">Introduced policies to improve efficiency and strengthen staff and volunteer capacity.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A graduation cap"><use href="#s-cap"/></svg>
+    <div class="job-when" data-my="၂၀၂၂ – ၂၀၂၄">2022 – 2024</div>
+    <h3 data-my="စီမံခန့်ခွဲရေး ဒါရိုက်တာ (စေတနာ့ဝန်ထမ်း)">Administrative Director (Volunteer)</h3>
+    <div class="org">Burma Academy, Thailand</div>
+    <ul>
+      <li data-my="လူမှုအသိုင်းအဝိုင်း ပညာရေးနဲ့ ကယ်ဆယ်ရေး အစီအစဉ်တွေအတွက် စီမံခန့်ခွဲမှု၊ HR နဲ့ ငွေကြေးကို ဦးဆောင်ခဲ့ပါတယ်။">Directed administration, HR and finance for community education and relief programs.</li>
+      <li data-my="Donor ဆက်သွယ်ရေး၊ အဆိုပြုလွာ ရေးသားခြင်းနဲ့ grant စီမံခန့်ခွဲမှုကို ဦးဆောင်ခဲ့ပါတယ်။">Led donor engagement, proposal writing and grant management.</li>
+      <li data-my="Donor စံနှုန်းနဲ့အညီ ငွေကြေးနဲ့ အစီအစဉ် အစီရင်ခံစာတွေ ပြင်ဆင်ခဲ့ပါတယ်။">Prepared financial and programmatic reports to donor standards.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+    <div class="job-when" data-my="၂၀၂၀ – ၂၀၂၁">2020 – 2021</div>
+    <h3 data-my="စီးပွားရေး စာရင်းကိုင်အရာရှိ (အဖွဲ့ခေါင်းဆောင်)">Business Accounting Officer (Team Leader)</h3>
+    <div class="org">Development Resources International Co., Ltd, Myanmar</div>
+    <ul>
+      <li data-my="သေးငယ်တဲ့ စီးပွားရေးလုပ်ငန်းတွေအတွက် မိုဘိုင်း accounting software ဖွံ့ဖြိုးရေးအဖွဲ့ကို ဦးဆောင်ခဲ့ပါတယ်။">Led a team developing mobile accounting software for small businesses.</li>
+      <li data-my="ထုတ်ကုန် လုပ်ငန်းစဉ်၊ client onboarding နဲ့ အတွင်းပိုင်း အစီရင်ခံမှုကို ကြီးကြပ်ခဲ့ပါတယ်။">Oversaw product operations, client onboarding and internal reporting.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+    <div class="job-when" data-my="၂၀၁၆ – ၂၀၂၀">2016 – 2020</div>
+    <h3 data-my="စာရင်းကိုင်">Accountant</h3>
+    <div class="org">Oriental Highway Co., Ltd, Nay Pyi Taw, Myanmar</div>
+    <ul>
+      <li data-my="ရရန်ငွေ၊ ပေးရန်ငွေ၊ ပြန်လည် တိုက်ဆိုင်မှုနဲ့ general ledger ကို စီမံခဲ့ပါတယ်။">Managed receivables, payables, reconciliations and the general ledger.</li>
+      <li data-my="ငွေကြေးအခြေအနေ အစီရင်ခံစာ၊ လစာနဲ့ အခွန် တင်သွင်းမှုတွေ ပြင်ဆင်ပြီး နှစ်စဉ် စာရင်းစစ်ကို ထောက်ပံ့ခဲ့ပါတယ်။">Prepared financial statements, payroll and tax submissions; supported annual audits.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+    <div class="job-when" data-my="၂၀၁၂ – ၂၀၁၆">2012 – 2016</div>
+    <h3 data-my="ကြီးကြပ်ရေးမှူး">Supervisor</h3>
+    <div class="org">Asia World Co., Ltd (Yangon – Mandalay 4-Lane Extension), Myanmar</div>
+    <ul>
+      <li data-my="လမ်းပရောဂျက်အတွက် ငွေကြေးနဲ့ ပစ္စည်းတွေကို စီမံကြီးကြပ်ခဲ့ပါတယ်။">Supervised finance and materials management for the highway project.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A phone being repaired"><use href="#s-phone"/></svg>
+    <div class="job-when" data-my="၂၀၁၀ – ၂၀၁၂">2010 – 2012</div>
+    <h3 data-my="မိုဘိုင်းဖုန်း ပြုပြင်ရေး နည်းပညာရှင်">Phone Service Technician</h3>
+    <div class="org">Mr Fone Co., Ltd, Myanmar</div>
+    <ul>
+      <li data-my="မိုဘိုင်းဖုန်းနဲ့ အီလက်ထရောနစ် ပစ္စည်းတွေကို ပြုပြင်ထိန်းသိမ်းပြီး အပိုပစ္စည်းတွေကို စီမံခဲ့ပါတယ်။">Repaired and maintained mobile phones and electronic devices; managed spare parts.</li>
+    </ul>
+  </article>
+
+  </div>
+  </div>
+  <div class="showcase-controls">
+    <button class="btn" id="prevBtn" type="button">←</button>
+    <span class="hint" data-my="ကတ်တွေကို ဆွဲရွှေ့နိုင်ပါတယ်၊ ဒါမှမဟုတ် ခလုတ်တွေ သုံးပါ">Drag the cards, or use the arrows</span>
+    <button class="btn" id="nextBtn" type="button">→</button>
+  </div>
+</section>
+
+<section id="teaching">
+  <div class="label"><span class="num">03</span><span class="eyebrow-l" data-my="သင်ကြားမှု">Teaching</span></div>
+  <h2 data-my="သင်ကြားမှု">Teaching</h2>
+  <p class="lead-line" data-my="Accounting၊ business နဲ့ project management ကို သင်ကြားပြီး အဖွဲ့အစည်းတွေအတွက် OD နဲ့ HR သင်တန်းတွေကို ဦးဆောင်ပေးပါတယ်။">I teach accounting, business and project management, and run training for organizations on OD and HR.</p>
+  <div class="showcase">
+    <div class="track" id="track2">
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A teacher at a board in a classroom"><use href="#s-class"/></svg>
+        <h3 data-my="ဆရာ (သင်ကြားသူ)">Instructor</h3>
+        <div class="org" data-my="Spring University Myanmar · ၂၀၂၃ ကတည်းက">Spring University Myanmar · Since 2023</div>
+        <p data-my="ကျောင်းသားတွေကို accounting၊ business နဲ့ project management ဘာသာရပ်တွေ သင်ကြားပါတယ်။ အမှန်တကယ် အဖွဲ့အစည်းတွေက လက်တွေ့ ဥပမာတွေလည်း ထည့်သွင်းပါတယ်။">Teaching accounting, business and project management subjects to students, with practical examples from real organizations.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3>LCCI</h3>
+        <div class="org" data-my="Accounting လက်မှတ်၊ အဆင့် ၁–၃">Accounting certificate, Levels 1–3</div>
+        <p data-my="LCCI အဆင့် ၁–၃ လမ်းကြောင်းရှိ အခြေခံ accounting ဖြစ်ပါတယ်။">Foundation accounting in the LCCI Levels 1–3 pathway.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="Financial Accounting">Financial Accounting</h3>
+        <div class="org" data-my="မှတ်တမ်းတင်ခြင်းနဲ့ အစီရင်ခံခြင်း">Recording and reporting</div>
+        <p data-my="ငွေကြေးအရောင်းအဝယ်တွေကို မှတ်တမ်းတင်ခြင်း၊ ငွေကြေးအခြေအနေ အစီရင်ခံစာ ပြင်ဆင်ခြင်းနဲ့ ဖတ်တတ်ခြင်း။">Recording transactions, preparing financial statements and reading them.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg>
+        <h3 data-my="Management Accounting">Management Accounting</h3>
+        <div class="org" data-my="ဆုံးဖြတ်ချက်အတွက် အချက်အလက်">Information for decisions</div>
+        <p data-my="ကုန်ကျစရိတ် တွက်ချက်ခြင်း၊ ဘတ်ဂျက် ရေးဆွဲခြင်းနဲ့ စီမံခန့်ခွဲမှု ဆုံးဖြတ်ချက်တွေကို ငွေကြေးအချက်အလက်နဲ့ ထောက်ပံ့ခြင်း။">Costing, budgeting and using financial information to support management decisions.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A truck on a road"><use href="#s-road"/></svg>
+        <h3 data-my="Project Management">Project Management</h3>
+        <div class="org" data-my="စီစဉ်ခြင်းနဲ့ ပေးအပ်ခြင်း">Planning and delivery</div>
+        <p data-my="ပရောဂျက်တစ်ခုရဲ့ အစကနေ ပြီးဆုံးချိန်အထိ စီစဉ်ခြင်း၊ အချိန်ဇယား၊ အရင်းအမြစ်နဲ့ အစီရင်ခံခြင်း။">Planning, scheduling, resources and reporting for a project from start to finish.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3>QuickBooks</h3>
+        <div class="org" data-my="Accounting software">Accounting software</div>
+        <p data-my="QuickBooks မှာ လက်တွေ့ စာရင်းထိန်းသိမ်းခြင်း - ငွေတောင်းခံလွာ၊ ပေးရန်စာရင်းနဲ့ အစီရင်ခံစာတွေ။">Hands-on bookkeeping in QuickBooks: invoices, bills and reports.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg>
+        <h3 data-my="Business Management">Business Management</h3>
+        <div class="org" data-my="အဖွဲ့အစည်းနဲ့ လုပ်ငန်းဆောင်ရွက်ခြင်း">Organization and operations</div>
+        <p data-my="စီးပွားရေးလုပ်ငန်းရဲ့ အဓိက လုပ်ဆောင်ချက်တွေ၊ အဖွဲ့အစည်းနဲ့ စီမံခန့်ခွဲမှုရဲ့ အခြေခံတွေ။">Core business functions, organization and management basics.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg>
+        <h3 data-my="အဖွဲ့အစည်းဖွံ့ဖြိုးရေး (OD)">Organizational Development (OD)</h3>
+        <div class="org" data-my="အဖွဲ့အစည်းများစွာ">Several organizations</div>
+        <p data-my="အဖွဲ့အစည်းတွေနဲ့ OD အကဲဖြတ်ခြင်းနဲ့ ပြောင်းလဲရေး အလုပ်။">OD assessment and change work with organizations.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A teacher at a board in a classroom"><use href="#s-class"/></svg>
+        <h3 data-my="OD သင်တန်း">OD Training</h3>
+        <div class="org" data-my="သင်တန်း ပို့ချခြင်း">Training delivery</div>
+        <p data-my="အဖွဲ့အစည်းဖွံ့ဖြိုးရေး သင်တန်းကို ဦးဆောင်ပို့ချခြင်း။">Facilitating organizational development training.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A teacher at a board in a classroom"><use href="#s-class"/></svg>
+        <h3 data-my="HR သင်တန်း">HR Training</h3>
+        <div class="org" data-my="သင်တန်း ပို့ချခြင်း">Training delivery</div>
+        <p data-my="လူ့စွမ်းအားအရင်းအမြစ် (HR) သင်တန်းအစီအစဉ်တွေ ပို့ချခြင်း။">Delivering human resources training sessions.</p>
+      </div>
+    </div>
+  </div>
+  <div class="showcase-controls">
+    <button class="btn" id="prev2" type="button">←</button>
+    <span class="hint" data-my="ကတ်တွေကို ဆွဲရွှေ့နိုင်ပါတယ်၊ ဒါမှမဟုတ် ခလုတ်တွေ သုံးပါ">Drag the cards, or use the arrows</span>
+    <button class="btn" id="next2" type="button">→</button>
+  </div>
+</section>
+
+<section id="building">
+  <div class="label"><span class="num">04</span><span class="eyebrow-l" data-my="တည်ဆောက်မှု">Building</span></div>
+  <h2 data-my="ကျွန်ုပ် <em>တည်ဆောက်</em>ခဲ့သော စနစ်များ">Systems I <em>build</em></h2>
+  <div class="showcase">
+    <div class="track" id="track3">
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="ငွေကြေးစနစ်">Finance system</h3>
+        <div class="org" data-my="ငွေကြေးနဲ့ အစီရင်ခံခြင်း">Finance and reporting</div>
+        <p data-my="ငွေစီးဆင်းမှုတွေကို မှတ်တမ်းတင်ပြီး အစီရင်ခံစာတွေ ထုတ်ပေးနိုင်တဲ့ ငွေကြေးစနစ်ကို တည်ဆောက်ခဲ့ပါတယ်။">Built a finance system to record money movements and produce reports.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg>
+        <h3 data-my="Sales ERP">Sales ERP</h3>
+        <div class="org" data-my="ရောင်းချမှုနဲ့ လုပ်ငန်းဆောင်ရွက်ခြင်း">Sales and operations</div>
+        <p data-my="ရောင်းချမှု မှတ်တမ်းတွေနဲ့ နောက်ဆက်တွဲ အဆင့်တွေကို စီမံနိုင်တဲ့ sales ERP ကို တည်ဆောက်ခဲ့ပါတယ်။">Built a sales ERP to manage sales records and the steps that follow them.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A teacher at a board in a classroom"><use href="#s-class"/></svg>
+        <h3 data-my="School ERP">School ERP</h3>
+        <div class="org" data-my="Spring University Myanmar · ဆောင်ရွက်နေဆဲ">Spring University Myanmar · in progress</div>
+        <p data-my="ကျောင်းသား admission portal နဲ့ ကျောင်း ERP ဖြစ်ပါတယ်။ intake အလိုက် short course တွေ၊ diploma တွေ၊ admin၊ cashier နဲ့ board dashboard တွေ ပါဝင်ပါတယ်။">Student admission portal and school ERP: short courses by intake, diplomas, and admin, cashier and board dashboards.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3 data-my="ဒီလုပ်ငန်းစဉ်တွေမှာ AI">AI in these processes</h3>
+        <div class="org" data-my="AI ကိရိယာတွေနဲ့ အလိုအလျောက် လုပ်ဆောင်ခြင်း">Automation with AI tools</div>
+        <p data-my="ဒီလုပ်ငန်းစဉ်တွေထဲမှာ AI ကိရိယာတွေနဲ့ ထပ်ခါတလဲလဲ လုပ်ရတဲ့ အဆင့်တွေကို ကိုင်တွယ်ပြီး အလုပ်ကို ပိုမြန်အောင် လုပ်ပါတယ်။ ဒီလို portfolio ဝက်ဘ်ဆိုဒ်နဲ့ စနစ်တွေကို AI နဲ့ တည်ဆောက်ပြီး တခြားသူတွေအတွက်လည်း တည်ဆောက်ပေးနိုင်ပါတယ်။">Using AI tools inside these processes to handle repeated steps and speed up the work. I build portfolio sites and systems like these with AI, and I can build them for others.</p>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3 data-my="ဤ portfolio ဝက်ဘ်ဆိုဒ်">This portfolio website</h3>
+        <div class="org" data-my="AI ကိရိယာတွေနဲ့ တည်ဆောက်ထားသည်">Built with AI tools</div>
+        <p data-my="Animation အပိုင်းတွေ၊ ဆွဲရွှေ့နိုင်တဲ့ showcase ကတ်တွေနဲ့ night mode ပါတဲ့ ကိုယ်ပိုင် ဝက်ဘ်ဆိုဒ် ဖြစ်ပြီး AI အကူအညီနဲ့ တည်ဆောက်ထားပါတယ်။">A personal site with animated sections, draggable showcase cards and a night mode, built with AI assistance.</p>
+        <div class="tags" style="margin-top:8px"><span class="tag deliv" data-my="ဝက်ဘ်ဒီဇိုင်း">Web design</span><span class="tag deliv" data-my="အပြန်အလှန် ဆက်သွယ်မှု">Interactive</span><span class="tag deliv" data-my="AI နဲ့">AI-assisted</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="showcase-controls">
+    <button class="btn" id="prev3" type="button">←</button>
+    <span class="hint" data-my="ကတ်တွေကို ဆွဲရွှေ့နိုင်ပါတယ်၊ ဒါမှမဟုတ် ခလုတ်တွေ သုံးပါ">Drag the cards, or use the arrows</span>
+    <button class="btn" id="next3" type="button">→</button>
+  </div>
+</section>
+
+<section id="services">
+  <div class="label"><span class="num">05</span><span class="eyebrow-l" data-my="ဝန်ဆောင်မှုများ">Services</span></div>
+  <h2 data-my="ကျွန်ုပ် <em>ပေးနိုင်သော</em> ဝန်ဆောင်မှုများ">What I can <em>deliver</em></h2>
+  <div class="showcase">
+    <div class="track" id="track4">
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A group of people around a leader"><use href="#s-team"/></svg>
+        <h3 data-my="အဖွဲ့ တည်ဆောက်ခြင်း">Team building</h3>
+        <p data-my="အဖွဲ့တစ်ခု ပိုပြီး အတူတူ လုပ်ဆောင်နိုင်အောင် အစည်းအဝေးတွေကို ဒီဇိုင်းဆွဲပြီး ဦးဆောင်ပေးခြင်း။">Designing and facilitating sessions that help a team work together better.</p>
+        <div class="tags"><span class="tag deliv" data-my="အစည်းအဝေး ဒီဇိုင်း">Session design</span><span class="tag deliv" data-my="ဦးဆောင်ပို့ချခြင်း">Facilitation</span><span class="tag deliv" data-my="အကျဉ်းချုပ် အစီရင်ခံစာ">Summary report</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="OD အကဲဖြတ်ခြင်း">OD assessment</h3>
+        <p data-my="အဖွဲ့အစည်းတစ်ခု ဘယ်လို လည်ပတ်နေလဲ၊ ဘယ်နေရာတွေ ပြောင်းလဲဖို့ လိုလဲဆိုတာကို အကဲဖြတ်ခြင်း။">Assessing how an organization works and where it needs to change.</p>
+        <div class="tags"><span class="tag deliv" data-my="အကဲဖြတ် အစီရင်ခံစာ">Assessment report</span><span class="tag deliv" data-my="တွေ့ရှိချက်များ">Findings</span><span class="tag deliv" data-my="လုပ်ဆောင်ချက် အစီအစဉ်">Action plan</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A teacher at a board in a classroom"><use href="#s-class"/></svg>
+        <h3 data-my="OD နဲ့ HR သင်တန်း">OD and HR training</h3>
+        <p data-my="ဝန်ထမ်းတွေနဲ့ မန်နေဂျာတွေအတွက် တိုက်ရိုက် သင်တန်းတွေ။">Training sessions for staff and managers, delivered in person.</p>
+        <div class="tags"><span class="tag deliv" data-my="သင်တန်း ဒီဇိုင်း">Training design</span><span class="tag deliv" data-my="ပို့ချခြင်း">Delivery</span><span class="tag deliv" data-my="လေ့ကျင့်စာရွက်များ">Handouts</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3 data-my="ERP စနစ်">ERP system</h3>
+        <p data-my="လုပ်ငန်းစဉ်ကစပြီး တည်ဆောက်ထားတဲ့ ငွေကြေး၊ ရောင်းချမှုနဲ့ ကျောင်း ERP စနစ်တွေ။">Finance, sales and school ERP systems, built from the process up.</p>
+        <div class="tags"><span class="tag deliv" data-my="လုပ်ငန်းစဉ် မြေပုံ">Process mapping</span><span class="tag deliv" data-my="အလုပ်လုပ်သော စနစ်">Working system</span><span class="tag deliv" data-my="အသုံးပြုသူ လမ်းညွှန်">User guide</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A phone with a pulse"><use href="#s-phone"/></svg>
+        <h3 data-my="သင့်လုပ်ငန်းစဉ်တွေမှာ AI">AI in your processes</h3>
+        <p data-my="ထပ်ခါတလဲလဲ လုပ်ရတဲ့ အဆင့်တွေကို ရှာဖွေပြီး AI ကိရိယာတွေနဲ့ အလိုအလျောက် လုပ်ပေးခြင်း။ တခြား အဖွဲ့အစည်းတွေအတွက်လည်း တည်ဆောက်ပေးနိုင်ပါတယ်။">Finding repeated steps and automating them with AI tools. I can build these for other organizations too.</p>
+        <div class="tags"><span class="tag deliv" data-my="လုပ်ငန်းစဉ် ပြန်လည်သုံးသပ်ခြင်း">Process review</span><span class="tag deliv" data-my="အလိုအလျောက် လုပ်ခြင်း">Automation</span><span class="tag deliv" data-my="အသုံးပြုရန် လမ်းညွှန်">Usage guide</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="Accounting နဲ့ QuickBooks">Accounting and QuickBooks</h3>
+        <p data-my="လက်တွေ့ လေ့ကျင့်ခန်းပါတဲ့ accounting နဲ့ စာရင်းထိန်းသိမ်းမှု သင်တန်း။">Accounting and bookkeeping training, with hands-on practice.</p>
+        <div class="tags"><span class="tag deliv" data-my="သင်တန်း အကြမ်းဖျဉ်း">Course outline</span><span class="tag deliv" data-my="လေ့ကျင့်ခန်းများ">Practice tasks</span><span class="tag deliv" data-my="အကဲဖြတ်ခြင်း">Assessment</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="ရန်ပုံငွေနဲ့ donor အစီရင်ခံခြင်း">Grant and donor reporting</h3>
+        <p data-my="Grant အဆိုပြုလွာတွေ ရေးသားခြင်းနဲ့ donor အတွက် ငွေကြေးနဲ့ အစီအစဉ် အစီရင်ခံစာတွေ ပြင်ဆင်ခြင်း။">Writing grant proposals and preparing financial and programme reports for donors.</p>
+        <div class="tags"><span class="tag deliv" data-my="အဆိုပြုလွာ မူကြမ်း">Proposal draft</span><span class="tag deliv" data-my="Donor အစီရင်ခံစာ">Donor report</span><span class="tag deliv" data-my="လိုက်နာမှု စစ်ဆေးခြင်း">Compliance check</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg>
+        <h3 data-my="Policy၊ SOP နဲ့ HR စီမံခန့်ခွဲမှု">Policy, SOP and HR admin</h3>
+        <p data-my="Policy နဲ့ SOP တွေ ရေးသားခြင်းနဲ့ လစာအပါအဝင် HR စီမံခန့်ခွဲမှုကို လုပ်ဆောင်ခြင်း။">Writing policies and SOPs, and running HR administration including payroll.</p>
+        <div class="tags"><span class="tag deliv" data-my="Policy စာရွက်စာတမ်း">Policy document</span><span class="tag deliv" data-my="SOP လက်စွဲ">SOP manual</span><span class="tag deliv" data-my="လစာ စနစ် သတ်မှတ်ခြင်း">Payroll setup</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="ဘတ်ဂျက်နဲ့ ငွေကြေး အခြေအနေ">Budgeting and financial statements</h3>
+        <p data-my="မန်နေဂျာတွေ အကောင်အထည်ဖော်နိုင်တဲ့ ဘတ်ဂျက်နဲ့ ငွေကြေးအခြေအနေ အစီရင်ခံစာတွေ ပြင်ဆင်ခြင်း။">Preparing budgets and financial statements that managers can act on.</p>
+        <div class="tags"><span class="tag deliv" data-my="ဘတ်ဂျက် မော်ဒယ်">Budget model</span><span class="tag deliv" data-my="ငွေကြေး အခြေအနေ">Financial statements</span><span class="tag deliv" data-my="လစဉ် ပြန်လည်သုံးသပ်ခြင်း">Monthly review</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3 data-my="Excel နဲ့ dashboard အစီရင်ခံခြင်း">Excel and dashboard reporting</h3>
+        <p data-my="Spreadsheet နဲ့ database တွေကို ရှင်းလင်းတဲ့ dashboard နဲ့ အစီရင်ခံစာတွေအဖြစ် ပြောင်းလဲခြင်း။">Turning spreadsheets and databases into clear dashboards and reports.</p>
+        <div class="tags"><span class="tag deliv" data-my="Excel မော်ဒယ်များ">Excel models</span><span class="tag deliv" data-my="SQL မေးခွန်းများ">SQL queries</span><span class="tag deliv">Dashboard</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage"><use href="#s-stage"/></svg>
+        <h3 data-my="အခမ်းအနားနဲ့ ပရောဂျက် logistics">Event and project logistics</h3>
+        <p data-my="အခမ်းအနားနဲ့ မီဒီယာ ပရောဂျက်တွေ စီစဉ်ခြင်း - အချိန်ဇယား၊ အရင်းအမြစ်နဲ့ အဖွဲ့ ညှိနှိုင်းမှု။">Planning events and media projects: schedules, resources and crew coordination.</p>
+        <div class="tags"><span class="tag deliv" data-my="အချိန်ဇယား">Schedule</span><span class="tag deliv" data-my="အရင်းအမြစ် အစီအစဉ်">Resource plan</span><span class="tag deliv" data-my="လုပ်ဆောင်ရန် စာရွက်">Run sheet</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A truck on a road"><use href="#s-road"/></svg>
+        <h3 data-my="လုပ်ငန်းစဉ် တိုးတက်စေခြင်း">Process improvement</h3>
+        <p data-my="အလုပ်စီးဆင်းပုံကို မြေပုံဆွဲပြီး ပိုမြန်ပိုရှင်းအောင် ပြန်ဒီဇိုင်းဆွဲခြင်း။">Mapping how work flows today and redesigning it to be faster and clearer.</p>
+        <div class="tags"><span class="tag deliv" data-my="လုပ်ငန်းစဉ် မြေပုံ">Process map</span><span class="tag deliv" data-my="ပြန်လည် ဒီဇိုင်း">Redesign</span><span class="tag deliv" data-my="အကောင်အထည်ဖော်မှု အစီအစဉ်">Implementation plan</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="Bars rising on a chart"><use href="#s-ledger"/></svg>
+        <h3 data-my="ဖြစ်ရပ်လေ့လာမှု - OD အကဲဖြတ်ခြင်း">Case approach: OD assessment</h3>
+        <p data-my="နားထောင်ခြင်းကစပြီး အကြံပြုချက်အထိ အကဲဖြတ်တဲ့ နည်းလမ်း။">How I run an assessment, from listening to recommendations.</p>
+        <div class="tags"><span class="tag deliv" data-my="၁။ နားထောင်ခြင်း">1. Listen</span><span class="tag deliv" data-my="၂။ စစ်ဆေးခြင်း">2. Diagnose</span><span class="tag deliv" data-my="၃။ အကြံပြုခြင်း">3. Recommend</span></div>
+      </div>
+      <div class="card">
+        <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A laptop with code lines"><use href="#s-laptop"/></svg>
+        <h3 data-my="ဖြစ်ရပ်လေ့လာမှု - ERP တည်ဆောက်ခြင်း">Case approach: ERP build</h3>
+        <p data-my="လုပ်ငန်းစဉ် မြေပုံကနေ အလုပ်လုပ်နိုင်တဲ့၊ လေ့ကျင့်ပြီးသား အဖွဲ့အထိ စနစ်တစ်ခုကို ဆောင်ရွက်ပုံ။">How I take a system from process map to a working, trained team.</p>
+        <div class="tags"><span class="tag deliv" data-my="၁။ မြေပုံဆွဲခြင်း">1. Map</span><span class="tag deliv" data-my="၂။ တည်ဆောက်ခြင်း">2. Build</span><span class="tag deliv" data-my="၃။ လေ့ကျင့်ပေးခြင်း">3. Train</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="showcase-controls">
+    <button class="btn" id="prev4" type="button">←</button>
+    <span class="hint" data-my="ကတ်တွေကို ဆွဲရွှေ့နိုင်ပါတယ်၊ ဒါမှမဟုတ် ခလုတ်တွေ သုံးပါ">Drag the cards, or use the arrows</span>
+    <button class="btn" id="next4" type="button">→</button>
+  </div>
+</section>
+
+<section id="volunteer">
+  <div class="label"><span class="num">06</span><span class="eyebrow-l" data-my="အသိုင်းအဝိုင်း လုပ်ငန်း">Volunteer Work</span></div>
+  <h2 data-my="အသိုင်းအဝိုင်း <em>ပရောဂျက်များ</em>">Community <em>projects</em></h2>
+  <div class="grid2">
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg><h3 data-my="ဆင်းရဲနွမ်းပါးသူ ကယ်ဆယ်ရေးနဲ့ ပံ့ပိုးမှု">Community relief and support</h3><div class="org" data-my="IDP စခန်းတွေ၊ နေရပ်စွန့်ခွာရတဲ့ အသိုင်းအဝိုင်းတွေနဲ့ ပြည်ပရောက် ပြည်သူများ">IDP camps, displaced communities and exiled people</div><p data-my="စာရွက်စာတမ်း ကူညီမှုနဲ့ အိမ်ဘေးကင်းမှု မရှိတော့သူတွေအတွက် နေရာပြောင်းရွှေ့ ကူညီမှုအပါအဝင် လုပ်ဆောင်ချက် ၁၀၀ ကျော်။">Over 100 community activities, including document support and relocation assistance for people whose homes are no longer safe.</p></div>
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage"><use href="#s-stage"/></svg><h3 data-my="စီမံညွှန်ကြားသူ">Project Coordinator</h3><div class="org" data-my="Rainbow in the Storm LGBTQ+ အခမ်းအနား · ၂၀၂၄">Rainbow in the Storm LGBTQ+ Event · 2024</div><p data-my="Logistics၊ ဖျော်ဖြေသူနဲ့ ဟောပြောသူတွေ၊ လူတိုင်း ပါဝင်နိုင်ပြီး ဘေးကင်းတဲ့ အခမ်းအနားကို ဦးတည်ခြင်း။">Logistics, performers and speakers, with a focus on an inclusive and safe event.</p></div>
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage"><use href="#s-stage"/></svg><h3 data-my="စီမံခန့်ခွဲသူ">Admin Manager</h3><div class="org" data-my="Together Short Film · နိုင်ငံတကာ ပြသမှု">Together Short Film · international screening</div><p data-my="အချိန်မှီ ပြီးမြောက်စေဖို့ စီမံခန့်ခွဲရေးနဲ့ ဌာနတွေကြား ညှိနှိုင်းမှု။">Administrative functions and department coordination to deliver on time.</p></div>
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage"><use href="#s-stage"/></svg><h3 data-my="စီမံခန့်ခွဲသူ">Admin Manager</h3><div class="org">Wild Awake Short Film</div><p data-my="ထုတ်လုပ်ရေးအဖွဲ့ကို ထောက်ပံ့ဖို့ အရင်းအမြစ် ခွဲဝေခြင်းနဲ့ အချိန်ဇယား ဆွဲခြင်း။">Resource allocation and scheduling to support the production team.</p></div>
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A team being directed"><use href="#s-team"/></svg><h3 data-my="စီမံခန့်ခွဲရေးအရာရှိ">Admin Officer</h3><div class="org" data-my="Revolution Means (PVTV စီးရီး)">Revolution Means (PVTV series)</div><p data-my="အချိန်ဇယား၊ မှတ်တမ်းတင်ခြင်းနဲ့ မိတ်ဖက်တွေနဲ့ ဆက်သွယ်ရေး။">Scheduling, documentation and partner communication.</p></div>
+    <div class="card"><svg class="art" viewBox="0 0 320 180" role="img" aria-label="A stage"><use href="#s-stage"/></svg><h3 data-my="စည်ကမ်းသူ">Organizer</h3><div class="org" data-my="90s' Kids စေတနာ ရန်ပုံငွေ အခမ်းအနား · ၂၀၁၆">90s' Kids Charity Event · 2016</div><p data-my="ဆင်းရဲနွမ်းပါးတဲ့ ကလေးတွေအတွက် ရန်ပုံငွေ ရှာဖွေတဲ့ အခမ်းအနား။">A fundraising event for underprivileged children.</p></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="label"><span class="num">07</span><span class="eyebrow-l" data-my="ပညာရေးနဲ့ ကျွမ်းကျင်မှု">Education &amp; Skills</span></div>
+  <h2 data-my="သင်တန်းနဲ့ <em>ကိရိယာများ</em>">Training and <em>tools</em></h2>
+  <div class="grid2">
+    <div class="card">
+      <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A graduation cap"><use href="#s-cap"/></svg>
+      <h3>B.Sc. Mathematics</h3>
+      <div class="org" data-my="Yangon University of Distance Education (အရှေ့ရန်ကုန်) · ၂၀၀၆ – ၂၀၁၀">Yangon University of Distance Education (East Yangon) · 2006 – 2010</div>
+      <p data-my="ပျမ်းမျှ အမှတ် ၄.၀ တွင် ၃.၂ ခန့်။">Grade point average about 3.2 out of 4.0.</p>
+    </div>
+    <div class="card">
+      <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A graduation cap"><use href="#s-cap"/></svg>
+      <h3 data-my="Accounting ဒစ်ပလိုမာ">Diploma in Accounting</h3>
+      <div class="org" data-my="Pearson Institute (LCCI အဆင့် ၁–၃) · ၂၀၁၉">Pearson Institute (LCCI Levels 1-3) · 2019</div>
+      <p data-my="Pearson ချီးမြှင့်တဲ့ LCCI အဆင့် ၁–၃ accounting ဘွဲ့။">LCCI Levels 1-3 in Accounting, awarded through Pearson.</p>
+    </div>
+    <div class="card">
+      <svg class="art" viewBox="0 0 320 180" role="img" aria-label="A graduation cap"><use href="#s-cap"/></svg>
+      <h3 data-my="အဖွဲ့အစည်းဖွံ့ဖြိုးရေး လက်မှတ်">Certificate in Organizational Development</h3>
+      <div class="org">Payap University</div>
+      <p data-my="အဖွဲ့အစည်းဖွံ့ဖြိုးရေး လက်မှတ်ဖြစ်ပြီး လက်တွေ့ အဖွဲ့အစည်းတွေမှာ အသုံးချထားပါတယ်။">Certificate in organizational development, applied to organizations in practice.</p>
+    </div>
+  </div>
+  <div class="tags" style="margin-top:22px;">
+    <span class="tag" data-my="LCCI အဆင့် ၁–၃">LCCI Levels 1–3</span><span class="tag" data-my="HR စီမံခန့်ခွဲမှု လက်မှတ်">HR Management Certificate</span><span class="tag" data-my="ပရောဂျက် စီမံခန့်ခွဲမှု လက်မှတ်">Project Management Certificate</span><span class="tag" data-my="စီးပွားရေး စီမံခန့်ခွဲမှု လက်မှတ်">Business Management Certificate</span><span class="tag">Advanced Excel</span><span class="tag">QuickBooks</span><span class="tag">MYOB</span><span class="tag">SQL</span><span class="tag">Peachtree</span><span class="tag" data-my="ဘတ်ဂျက်နဲ့ donor အစီရင်ခံခြင်း">Budgeting &amp; donor reporting</span><span class="tag" data-my="Grant စီမံခန့်ခွဲမှု">Grant management</span><span class="tag" data-my="Policy နဲ့ SOP">Policy &amp; SOPs</span><span class="tag" data-my="AI နဲ့ web နဲ့ စနစ် တည်ဆောက်ခြင်း">AI-assisted web and system building</span>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="label"><span class="num">08</span><span class="eyebrow-l" data-my="မေးခွန်းများ">FAQ</span></div>
+  <h2 data-my="မကြာခဏ မေးတတ်သော <em>မေးခွန်းများ</em>">Common <em>questions</em></h2>
+  <details>
+    <summary data-my="ဘယ်ဘာသာစကားတွေနဲ့ အလုပ်လုပ်သလဲ?">Which languages do you work in?</summary>
+    <p data-my="မြန်မာ (မိခင်ဘာသာ) နဲ့ အင်္ဂလိပ် (EF SET C2၊ ၇၅/၁၀၀)။">Burmese (native) and English (EF SET C2, 75/100).</p>
+  </details>
+  <details>
+    <summary data-my="အဝေးမှ အလုပ်လုပ်ဖို့ လက်ခံသလား?">Are you open to remote work?</summary>
+    <p data-my="လက်ခံပါတယ်။ လက်ရှိ Spring University Myanmar မှာ အချိန်ပိုင်းနဲ့ အဝေးမှ လုပ်ဆောင်နေပါတယ်။">Yes. My current role at Spring University Myanmar is part-time and remote.</p>
+  </details>
+  <details>
+    <summary data-my="ဘယ်လိုရာထူးမျိုးကို ရှာနေသလဲ?">What kinds of roles are you looking for?</summary>
+    <p data-my="ပညာရေး၊ အစိုးရမဟုတ်သော နဲ့ အနုပညာ အဖွဲ့အစည်းတွေမှာ စီမံခန့်ခွဲရေး၊ ငွေကြေးနဲ့ ပရောဂျက် ရာထူးတွေ၊ accounting နဲ့ စီးပွားရေး သင်ကြားမှု။">Administration, finance and project roles in education, nonprofit and arts organizations, and teaching in accounting and business.</p>
+  </details>
+</section>
+
+<section id="recommendations">
+  <div class="label"><span class="eyebrow-l" data-my="ထောက်ခံစာများ">Recommendations</span></div>
+  <h2 data-my="ထောက်ခံ<em>စာများ</em>">Recommendation <em>letters</em></h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Burma Academy</h3>
+      <p data-my="အလုပ်ကြိုးစားမှု၊ ဆက်သွယ်ရေး၊ အဖွဲ့လိုက် လုပ်ဆောင်မှုနဲ့ ခေါင်းဆောင်မှုကို ချီးမွမ်းပြီး အားရစွာ ထောက်ခံခဲ့ပါတယ်။ အပြုသဘောဆောင်ပြီး လှုံ့ဆော်နိုင်တဲ့ ခေါင်းဆောင်တစ်ဦး ဖြစ်ပြီး အလားအလာ ကောင်းကြောင်း ဖော်ပြထားပါတယ်။">Praised his work ethic, communication, teamwork and leadership, and strongly recommended him. Describes him as a positive, motivated leader with great potential.</p>
+    </div>
+    <div class="card">
+      <h3>Development Resources International (DRI)</h3>
+      <div class="org" data-my="M. Shafiquer Rahman၊ Director and Chairman · ၂၂ သြဂုတ် ၂၀၂၂">M. Shafiquer Rahman, Director and Chairman · 22 Aug 2022</div>
+      <p data-my="သေးငယ်တဲ့ စီးပွားရေးလုပ်ငန်းနဲ့ လယ်သမားတွေအတွက် စာရင်းကိုင် စွမ်းရည် တိုးမြှင့်ရေး အစီအစဉ်မှာ အဓိက အဖွဲ့ဝင် ဖြစ်ခဲ့ပါတယ်။ အဖွဲ့ခေါင်းဆောင်အနေနဲ့ ဗျူဟာနဲ့ ဝင်ငွေ အလုပ်တွေကို ဦးဆောင်ခဲ့ပြီး training manual နဲ့ user guide ရေးသားခဲ့ပါတယ်။ မြန်မာနဲ့ အင်္ဂလိပ် နှစ်ဘာသာလုံးမှာ ရှင်းလင်းတဲ့ အစီရင်ခံစာတွေ ရေးသားနိုင်ပါတယ်။">A key team member on a programme building accounting capacity for small enterprises and farmers. As team leader, he handled strategy and revenue work, helped write a training manual and user guide, and wrote clear reports in Burmese and English.</p>
+    </div>
+    <div class="card">
+      <h3>Development Resources International (DRI)</h3>
+      <div class="org" data-my="Kyaw Naing၊ Managing Director · ၁၀ သြဂုတ် ၂၀၂၂">Kyaw Naing, Managing Director · 10 Aug 2022</div>
+      <p data-my="ရိုးသားမှုရှိသူ ဖြစ်ကြောင်း၊ ဆက်သွယ်ရေး၊ လိုက်လျောညီထွေ ဖြစ်မှုနဲ့ ဆန်းသစ်တဲ့ အကြံဉာဏ်တွေ ရှိကြောင်း ဖော်ပြထားပြီး စာရင်းကိုင်နဲ့ ငွေကြေး စီမံခန့်ခွဲမှု အတွက် အားရစွာ ထောက်ခံထားပါတယ်။">Describes him as a person of integrity with strong communication, adaptability and innovative ideas, and highly recommends him for accounting and financial management work.</p>
+    </div>
+    <div class="card">
+      <h3>Oriental Highway Co., Ltd</h3>
+      <div class="org" data-my="Tin Zar Mon Htay၊ Senior Accountant · ၄ သြဂုတ် ၂၀၂၀">Tin Zar Mon Htay, Senior Accountant · 4 Aug 2020</div>
+      <p data-my="ကြီးကြပ်မှုအောက်မှာ accountant အဖြစ် ၂၀၁၇ မှ ၂၀၂၀ အထိ အလုပ်လုပ်ခဲ့ပါတယ်။ တိကျမှုနဲ့ အချိန်မှန် ပြီးစီးမှု၊ အဓိက client အလုပ်တွေ ကိုင်တွယ်နိုင်မှုကို ချီးမွမ်းပြီး mid-level accounting ရာထူးအတွက် အားရစွာ ထောက်ခံခဲ့ပါတယ်။">Worked as an accountant under the writer's supervision from 2017 to 2020. Praised his meticulous, accurate work, on-time delivery and handling of major client jobs, and strongly recommended him for mid-level accounting roles.</p>
+    </div>
+  </div>
+</section>
+
+<section id="testimonial">
+  <div class="label"><span class="eyebrow-l" data-my="သက်သေခံချက်">Testimonial</span></div>
+  <h2 data-my="ရည်ညွှန်း<em>စာ</em>">Reference <em>letter</em></h2>
+  <blockquote class="quote">
+    <span data-my="ဗျူဟာကျတဲ့ တွေးခေါ်မှု၊ ထိရောက်တဲ့ အဖွဲ့ခေါင်းဆောင်မှုနဲ့ virtual အလုပ်ခွင်ကို စီမံနိုင်စွမ်းကို ပြသခဲ့ပါတယ်။ LCCI၊ ACCA၊ HR နဲ့ fintech ဘာသာရပ်တွေမှာ ကျောင်းသား ၅၀၀ ကျော်ကို သင်ကြားပေးခဲ့ကြောင်းလည်း ရေးသားထားပါတယ်။">He showed strong strategic thinking, effective team leadership, and the ability to run a fully virtual workplace. The letter also notes that he has taught over 500 students in LCCI, ACCA, HR and fintech subjects.</span>
+    <cite data-my="— ကိုသူရ၊ သမ္မတ၊ Spring University Myanmar (ရည်ညွှန်းစာ)">— Ko Thura, President, Spring University Myanmar (reference letter)</cite>
+  </blockquote>
+</section>
+
+<section id="contact" class="contact">
+  <div class="eyebrow" style="color:var(--accent);" data-my="၀၉ · ဆက်သွယ်ရန်">09 · Contact</div>
+  <h2 data-my="စကားပြောကြပါစို့">Let's <em>talk</em></h2>
+  <p class="big"><a href="mailto:pyaephyonaing.six@gmail.com">pyaephyonaing.six@gmail.com</a></p>
+  <p data-my="+66 65 552 5344 · ချင်းမိုင်၊ ထိုင်း">+66 65 552 5344 · Chiang Mai, Thailand</p>
+  <p data-my="အဝေးမှ၊ contract နဲ့ full-time အလုပ်တွေကို လက်ခံပါတယ်။">Open to remote, contract and full-time work.</p>
+  <p style="opacity:.8;" data-my="ကိုသူရ (Spring University Myanmar သမ္မတ) ရဲ့ ရည်ညွှန်းစာ ရရှိနိုင်ပါတယ်။ တခြား ရည်ညွှန်းသူတွေကိုလည်း တောင်းဆိုရင် ပေးနိုင်ပါတယ်။">Reference from Ko Thura (President, Spring University Myanmar) available. Additional references on request.</p>
+</section>
+
+<footer data-my="Pyae Phyo Naing (Mya Thar) · ချင်းမိုင်၊ ထိုင်း">Pyae Phyo Naing (Mya Thar) · Chiang Mai, Thailand</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  (function () {
+    // floating rings and cubes behind the page
+    for (var i = 0; i < 16; i++) {
+      var s = document.createElement('div');
+      var size = 26 + Math.random() * 70;
+      s.className = 'shape ' + (i % 2 ? 'ring' : 'cube');
+      s.style.width = size + 'px'; s.style.height = size + 'px';
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.top = (Math.random() * 100) + 'vh';
+      s.style.animationDuration = (30 + Math.random() * 30) + 's';
+      s.style.animationDelay = (-Math.random() * 40) + 's';
+      document.body.appendChild(s);
+    }
+  })();
+
+  (function () {
+    // split English text into letters, keeping words whole, so the letters can ripple under the cursor
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    function split(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (k) {
+        if (k.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          k.textContent.split(/(\s+)/).forEach(function (tok) {
+            if (!tok) return;
+            if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var w = document.createElement('span');
+            w.className = 'w';
+            tok.split('').forEach(function (c) {
+              var s = document.createElement('span');
+              s.className = 'ch';
+              s.textContent = c;
+              w.appendChild(s);
+            });
+            frag.appendChild(w);
+          });
+          k.parentNode.replaceChild(frag, k);
+        } else if (k.nodeType === 1 && k.tagName !== 'SCRIPT' && !k.hasAttribute('data-my-skip')) {
+          split(k);
+        }
+      });
+    }
+    document.querySelectorAll('.hero h1, h2, .sub, .lead, .job h3, .card h3, summary').forEach(function (el) {
+      split(el);
+      el.addEventListener('pointermove', function (e) {
+        el.querySelectorAll('.ch').forEach(function (c) {
+          var r = c.getBoundingClientRect();
+          var d = Math.abs(e.clientX - (r.left + r.width / 2));
+          var lift = Math.max(0, 1 - d / 70);
+          c.style.transform = lift > 0 ? 'translateY(' + (-lift * 9).toFixed(1) + 'px)' : '';
+        });
+      });
+      el.addEventListener('pointerleave', function () {
+        el.querySelectorAll('.ch').forEach(function (c) { c.style.transform = ''; });
+      });
+    });
+  })();
+
+  (function () {
+    // light that follows the cursor
+    var glow = document.createElement('div'); glow.id = 'glow';
+    document.body.appendChild(glow);
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.addEventListener('pointermove', function (e) {
+      glow.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+    });
+  })();
+
+  (function () {
+    // water-like ripples and bubbles that follow the cursor
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var last = 0;
+    function spawn(x, y, type) {
+      var d = document.createElement('span');
+      d.className = 'fx ' + type;
+      d.style.left = x + 'px';
+      d.style.top = y + 'px';
+      if (type === 'bub') {
+        var s = 4 + Math.random() * 9;
+        d.style.width = s + 'px'; d.style.height = s + 'px';
+        d.style.margin = (-s / 2) + 'px 0 0 ' + (-s / 2) + 'px';
+        d.style.animationDuration = (0.9 + Math.random() * 0.9) + 's';
+        d.style.setProperty('--dx', (Math.random() * 26 - 13) + 'px');
+      }
+      document.body.appendChild(d);
+      setTimeout(function () { d.remove(); }, 1900);
+    }
+    document.addEventListener('pointermove', function (e) {
+      var now = Date.now();
+      if (now - last < 120) return;
+      last = now;
+      if (Math.random() < 0.4) spawn(e.clientX, e.clientY, 'bub');
+    });
+    document.addEventListener('pointerdown', function (e) {
+      spawn(e.clientX, e.clientY, 'ring');
+      spawn(e.clientX, e.clientY, 'bub');
+    });
+  })();
+
+  (function () {
+    // drag-to-scroll for each showcase track, with arrow buttons
+    function makeTrack(id, prevId, nextId) {
+      var t = document.getElementById(id);
+      if (!t) return;
+      var down = false, sx = 0, sl = 0, moved = false;
+      t.addEventListener('pointerdown', function (e) {
+        down = true; sx = e.clientX; sl = t.scrollLeft; moved = false;
+      });
+      t.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var dx = e.clientX - sx;
+        if (Math.abs(dx) > 4) { moved = true; t.classList.add('dragging'); }
+        t.scrollLeft = sl - dx;
+      });
+      function up() { down = false; t.classList.remove('dragging'); }
+      t.addEventListener('pointerup', up);
+      t.addEventListener('pointerleave', up);
+      t.addEventListener('pointercancel', up);
+      t.addEventListener('click', function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); }
+      }, true);
+      document.getElementById(prevId).addEventListener('click', function () {
+        t.scrollBy({ left: -330, behavior: 'smooth' });
+      });
+      document.getElementById(nextId).addEventListener('click', function () {
+        t.scrollBy({ left: 330, behavior: 'smooth' });
+      });
+    }
+    makeTrack('track', 'prevBtn', 'nextBtn');
+    makeTrack('track2', 'prev2', 'next2');
+    makeTrack('track3', 'prev3', 'next3');
+    makeTrack('track4', 'prev4', 'next4');
+  })();
+
+  (function () {
+    // volunteer cards can be dragged around (they stay where you leave them)
+    var sec = document.getElementById('volunteer');
+    if (sec) {
+      var hint = document.createElement('p');
+      hint.className = 'hint';
+      hint.setAttribute('data-my', 'အကြံပြုချက်: ကတ်တွေကို ဆွဲပြီး နေရာပြောင်းနိုင်ပါတယ်။');
+      hint.textContent = 'Tip: drag the cards to rearrange them.';
+      sec.querySelector('h2').after(hint);
+    }
+    document.querySelectorAll('#volunteer .card').forEach(function (card) {
+      var pos = { x: 0, y: 0 }, start = null;
+      card.classList.add('drag');
+      card.addEventListener('pointerdown', function (e) {
+        start = { x: e.clientX - pos.x, y: e.clientY - pos.y };
+        card.classList.add('dragging');
+        card.setPointerCapture(e.pointerId);
+      });
+      card.addEventListener('pointermove', function (e) {
+        if (!start) return;
+        pos.x = e.clientX - start.x; pos.y = e.clientY - start.y;
+        card.style.transform = 'translate(' + pos.x + 'px,' + pos.y + 'px)';
+      });
+      function end() { start = null; card.classList.remove('dragging'); }
+      card.addEventListener('pointerup', end);
+      card.addEventListener('pointercancel', end);
+    });
+  })();
+
+  (function () {
+    // Burmese / English switch: every element with data-my is swapped
+    var langBtn = document.getElementById('langBtn');
+    document.querySelectorAll('[data-my]').forEach(function (el) {
+      if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+    });
+    function setLang(l) {
+      document.querySelectorAll('[data-my]').forEach(function (el) {
+        el.innerHTML = l === 'my' ? el.getAttribute('data-my') : el.dataset.en;
+      });
+      langBtn.textContent = l === 'my' ? 'EN' : 'မြန်မာ';
+      document.documentElement.setAttribute('data-lang', l);
+      document.documentElement.lang = l === 'my' ? 'my' : 'en';
+      try { localStorage.setItem('lang', l); } catch (e) {}
+    }
+    langBtn.addEventListener('click', function () {
+      setLang(document.documentElement.getAttribute('data-lang') === 'my' ? 'en' : 'my');
+    });
+    var saved = null;
+    try { saved = localStorage.getItem('lang'); } catch (e) {}
+    if (saved === 'my') setLang('my');
+  })();
+
+  (function () {
+    // theme choice: Paper, Night, Warm Gold, Teal
+    var sel = document.getElementById('themeSel');
+    var root = document.documentElement;
+    function apply(t) {
+      if (!t || t === 'paper') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+      sel.value = t || 'paper';
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    apply(saved);
+    sel.addEventListener('change', function () {
+      apply(sel.value);
+      try { localStorage.setItem('theme', sel.value); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
